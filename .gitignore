@@ -75,6 +75,8 @@ xvlog.*
 ## IP folder - ignore all except .xci files (this is the hacky way to do it)
 ip/mmcm/*
 !ip/mmcm/*.xci
+!ip/mmcm/**.xdc
+
 
 
 

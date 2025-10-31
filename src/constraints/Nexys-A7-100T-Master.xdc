@@ -4,10 +4,9 @@
 ## - rename the used ports (in each line, after get_ports) according to the top level signal names in the project
 ## Note: As the Nexys 4 DDR was rebranded to the Nexys A7 with no substantial changes, this XDC file will also work for the Nexys 4 DDR.
 
-## Clock signal
-set_property -dict { PACKAGE_PIN E3    IOSTANDARD LVCMOS33 } [get_ports { CLK100MHZ }]; #IO_L12P_T1_MRCC_35 Sch=clk100mhz
-create_clock -add -name logic_clk -period 10.00 -waveform {0 5} [get_ports {CLK100MHZ}];
-
+## Clock signal (MMCM creates and constrains external clock)
+set_property -dict { PACKAGE_PIN E3    IOSTANDARD LVCMOS33 } [get_ports { clk100mhz }]; #IO_L12P_T1_MRCC_35 Sch=clk100mhz
+create_clock -add -name logic_clk -period 10.00 -waveform {0 5} [get_ports {clk100mhz}];
 
 ##Switches
 #set_property -dict { PACKAGE_PIN J15   IOSTANDARD LVCMOS33 } [get_ports { SW[0] }]; #IO_L24N_T3_RS0_15 Sch=sw[0]

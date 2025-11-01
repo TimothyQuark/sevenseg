@@ -4,9 +4,11 @@ library ieee;
 
 entity top is
     port (
-        cpu_resetn : in    std_logic;                   -- Active low async reset button
-        clk100mhz  : in    std_logic;                   -- External reference clock
-        led        : out   std_logic_vector(2 downto 0) -- Green LEDs
+        cpu_resetn : in    std_logic;                    -- Active low async reset button
+        clk100mhz  : in    std_logic;                    -- External reference clock
+        led        : out   std_logic_vector(2 downto 0); -- Green LEDs
+        seg        : out   std_logic_vector(6 downto 0);
+        seg_an     : out   std_logic_vector(7 downto 0)
     );
 end entity top;
 
@@ -38,5 +40,14 @@ begin
         end if;
 
     end process p_led;
+
+    sevenseg : entity work.sevenseg
+        port map (
+            clk_logic => clk_logic,
+            wr        => '0',
+            sym       => X"A",
+            seg       => seg,
+            sel       => seg_an
+        );
 
 end architecture behav;

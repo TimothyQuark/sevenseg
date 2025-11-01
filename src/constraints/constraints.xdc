@@ -11,14 +11,20 @@
 # create_generated_clock -name abcd [mmcm/inst/mmcm_adv_inst/CLKOUT0]
 
 # The external reset signal is asynchronous (mechanical button press), so do not check setup/hold times
-set_false_path -from [get_ports cpu_resetn]
+set_false_path -from [get_ports i_resetn]
 
 #############################################################
 ################# IO pin constraints ########################
 #############################################################
 
 # LED timings are not important, so leave fully unconstrained
-set_false_path -to [get_ports led[*]]
+set_false_path -to [get_ports {o_led[*]}]
 
-# set_output_delay -clock [get_clocks clk_logic] -min -add_delay 0.000 [get_ports {led[*]}]
-# set_output_delay -clock [get_clocks clk_logic] -max -add_delay 5.000 [get_ports {led[*]}]
+# 7 Segment timings not important
+set_false_path -to [get_ports {o_seg[*]}]
+set_false_path -to [get_ports {o_seg_an[*]}]
+
+create_waiver -type METHODOLOGY -id {TIMING-17} -user "timm" -desc "Ignore the 7 segment LED clock pins driven by logic" -objects [get_pins {sevenseg/p_strobe.index_reg[*]/C}] -timestamp "Sat Nov  1 20:21:48 GMT 2025"
+create_waiver -type METHODOLOGY -id {TIMING-17} -user "timm" -desc "Ignore the 7 segment LED clock pins driven by logic" -objects [get_pins { sevenseg/p_strobe.strobe_reg[*]/C }] -timestamp "Sat Nov  1 20:25:48 GMT 2025"
+create_waiver -type METHODOLOGY -id {TIMING-17} -user "timm" -desc "Ignore the 7 segment LED clock pins driven by logic" -objects [get_pins { sevenseg/seg_an_reg[*]/C }] -timestamp "Sat Nov  1 20:26:16 GMT 2025"
+create_waiver -type METHODOLOGY -id {TIMING-17} -user "timm" -desc "Ignore the 7 segment LED clock pins driven by logic" -objects [get_pins { sevenseg/seg_reg[*]/C }] -timestamp "Sat Nov  1 20:26:24 GMT 2025"

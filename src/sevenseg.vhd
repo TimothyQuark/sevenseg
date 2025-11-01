@@ -17,6 +17,7 @@ end entity sevenseg;
 architecture behav of sevenseg is
 
     -- Clock made in logic because it drives only 1 signal. A slower clock will dim the segment displays
+    -- Vivado Implementation has a HIGH warning for this logic, but way better than fiddling with MMCM cascading or CLK EN
     signal clk_slow : std_logic;             -- Very slow 7 segment clock (Should be 60 Hz to 1 KHz)
     signal s_cntr   : unsigned(17 downto 0); -- Counter to derive slow clock (200 MHz / 2**18 / 8 displays = 95 Hz)
 

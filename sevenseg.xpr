@@ -66,12 +66,12 @@
     <Option Name="WTVcsLaunchSim" Val="0"/>
     <Option Name="WTRivieraLaunchSim" Val="0"/>
     <Option Name="WTActivehdlLaunchSim" Val="0"/>
-    <Option Name="WTXSimExportSim" Val="2"/>
-    <Option Name="WTModelSimExportSim" Val="2"/>
-    <Option Name="WTQuestaExportSim" Val="2"/>
+    <Option Name="WTXSimExportSim" Val="4"/>
+    <Option Name="WTModelSimExportSim" Val="4"/>
+    <Option Name="WTQuestaExportSim" Val="4"/>
     <Option Name="WTIesExportSim" Val="0"/>
-    <Option Name="WTVcsExportSim" Val="2"/>
-    <Option Name="WTRivieraExportSim" Val="2"/>
+    <Option Name="WTVcsExportSim" Val="4"/>
+    <Option Name="WTRivieraExportSim" Val="4"/>
     <Option Name="WTActivehdlExportSim" Val="0"/>
     <Option Name="GenerateIPUpgradeLog" Val="TRUE"/>
     <Option Name="XSimRadix" Val="hex"/>
@@ -110,7 +110,14 @@
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/src/constraints/constraints.xdc">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+        </FileInfo>
+      </File>
       <Config>
+        <Option Name="TargetConstrsFile" Val="$PPRDIR/src/constraints/constraints.xdc"/>
         <Option Name="ConstrsType" Val="XDC"/>
       </Config>
     </FileSet>
@@ -205,7 +212,7 @@
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xc7a100tcsg324-1" ConstrsSet="constrs_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" SynthRun="synth_1" IncludeInArchive="true" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/impl_1" AutoRQSDir="$PSRCDIR/utils_1/imports/impl_1" ParallelReportGen="true">
+    <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xc7a100tcsg324-1" ConstrsSet="constrs_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" Dir="$PRUNDIR/impl_1" SynthRun="synth_1" IncludeInArchive="true" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/impl_1" LaunchOptions="-jobs 6 " AutoRQSDir="$PSRCDIR/utils_1/imports/impl_1" ParallelReportGen="true">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2025"/>
         <Step Id="init_design"/>
@@ -218,6 +225,7 @@
         <Step Id="post_route_phys_opt_design"/>
         <Step Id="write_bitstream"/>
       </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
       <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2025"/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
@@ -240,6 +248,34 @@
       <RQSFiles/>
     </Run>
   </Runs>
+  <MsgRule>
+    <MsgAttr Name="RuleType" Val="1"/>
+    <MsgAttr Name="Limit" Val="-1"/>
+    <MsgAttr Name="NewSeverity" Val="INFO"/>
+    <MsgAttr Name="Id" Val="Board 49-26"/>
+    <MsgAttr Name="Severity" Val="ANY"/>
+    <MsgAttr Name="ShowRule" Val="1"/>
+    <MsgAttr Name="RuleSource" Val="2"/>
+    <MsgAttr Name="StringIsRegExp" Val="0"/>
+    <MsgAttr Name="RuleId" Val="1"/>
+    <MsgAttr Name="Note" Val=""/>
+    <MsgAttr Name="Author" Val=""/>
+    <MsgAttr Name="CreatedTimestamp" Val=""/>
+  </MsgRule>
+  <MsgRule>
+    <MsgAttr Name="RuleType" Val="1"/>
+    <MsgAttr Name="Limit" Val="-1"/>
+    <MsgAttr Name="NewSeverity" Val="INFO"/>
+    <MsgAttr Name="Id" Val="Synth 8-7080"/>
+    <MsgAttr Name="Severity" Val="ANY"/>
+    <MsgAttr Name="ShowRule" Val="1"/>
+    <MsgAttr Name="RuleSource" Val="2"/>
+    <MsgAttr Name="StringIsRegExp" Val="0"/>
+    <MsgAttr Name="RuleId" Val="2"/>
+    <MsgAttr Name="Note" Val=""/>
+    <MsgAttr Name="Author" Val=""/>
+    <MsgAttr Name="CreatedTimestamp" Val=""/>
+  </MsgRule>
   <Board/>
   <DashboardSummary Version="1" Minor="0">
     <Dashboards>

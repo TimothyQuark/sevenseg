@@ -4,22 +4,22 @@ library ieee;
 
 entity top is
     port (
-        i_resetn        : in    std_logic;                    -- Active low async reset button
-        i_clk_ref100mhz : in    std_logic;                    -- External reference clock
-        o_led           : out   std_logic_vector(2 downto 0); -- Green LEDs
-        o_seg_an        : out   std_logic_vector(7 downto 0); -- 7 Segment selection
-        o_seg           : out   std_logic_vector(6 downto 0)  -- 7 Segment symbol
+        clk_ref100mhz : in    std_logic;                    --! External reference clock
+        i_resetn      : in    std_logic;                    --! Active low async reset button
+        o_led         : out   std_logic_vector(2 downto 0); --! Green LEDs
+        o_seg_an      : out   std_logic_vector(7 downto 0); --! 7 Segment selection
+        o_seg         : out   std_logic_vector(6 downto 0)  --! 7 Segment symbol
     );
 end entity top;
 
 architecture behav of top is
 
-    signal clk_logic : std_logic; -- 200 MHz Logic Clock
-    signal s_led     : std_logic_vector(2 downto 0);
+    signal clk_logic : std_logic;                    --! 200 MHz Logic Clock
+    signal s_led     : std_logic_vector(2 downto 0); --! Green LEDs
 
-    signal s_sevenseg_wr   : std_logic;
-    signal s_sevenseg_addr : unsigned(2 downto 0);
-    signal s_sevenseg_data : unsigned(3 downto 0);
+    signal s_sevenseg_wr   : std_logic;            --! Wr EN 7 seg
+    signal s_sevenseg_addr : unsigned(2 downto 0); --! 7 segment select
+    signal s_sevenseg_data : unsigned(3 downto 0); --! 7 segment symbol
 
 begin
 
@@ -27,7 +27,7 @@ begin
     mmcm : entity work.mmcm
         port map (
             clk_logic       => clk_logic,
-            i_clk_ref100mhz => i_clk_ref100mhz
+            i_clk_ref100mhz => clk_ref100mhz
         );
 
     o_led <= s_led;
@@ -73,11 +73,11 @@ begin
     sevenseg : entity work.sevenseg
         port map (
             clk_logic => clk_logic,
-            wr        => s_sevenseg_wr,
-            addr      => s_sevenseg_addr,
-            data      => s_sevenseg_data,
-            seg_an    => o_seg_an,
-            seg       => o_seg
+            i_wr      => s_sevenseg_wr,
+            i_addr    => s_sevenseg_addr,
+            i_data    => s_sevenseg_data,
+            o_seg_an  => o_seg_an,
+            o_seg     => o_seg
         );
 
 end architecture behav;

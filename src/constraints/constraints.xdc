@@ -13,6 +13,9 @@
 # The external reset signal is asynchronous (mechanical button press), so do not check setup/hold times
 set_false_path -from [get_ports i_resetn]
 
+# Create a random clock to drive 7 segment pins so methodologyc doesn't warn about no clock
+create_generated_clock -name clk_slow -source [get_pins sevenseg/clk_slow_reg/Q] -multiply_by 1 [get_pins sevenseg/clk_slow_reg/Q]
+
 #############################################################
 ################# IO pin constraints ########################
 #############################################################
@@ -25,6 +28,6 @@ set_false_path -to [get_ports {o_seg[*]}]
 set_false_path -to [get_ports {o_seg_an[*]}]
 
 create_waiver -type METHODOLOGY -id {TIMING-17} -user "timm" -desc "Ignore the 7 segment LED clock pins driven by logic" -objects [get_pins {sevenseg/p_strobe.index_reg[*]/C}] -timestamp "Sat Nov  1 20:21:48 GMT 2025"
-create_waiver -type METHODOLOGY -id {TIMING-17} -user "timm" -desc "Ignore the 7 segment LED clock pins driven by logic" -objects [get_pins { sevenseg/p_strobe.strobe_reg[*]/C }] -timestamp "Sat Nov  1 20:25:48 GMT 2025"
-create_waiver -type METHODOLOGY -id {TIMING-17} -user "timm" -desc "Ignore the 7 segment LED clock pins driven by logic" -objects [get_pins { sevenseg/seg_an_reg[*]/C }] -timestamp "Sat Nov  1 20:26:16 GMT 2025"
-create_waiver -type METHODOLOGY -id {TIMING-17} -user "timm" -desc "Ignore the 7 segment LED clock pins driven by logic" -objects [get_pins { sevenseg/seg_reg[*]/C }] -timestamp "Sat Nov  1 20:26:24 GMT 2025"
+create_waiver -type METHODOLOGY -id {TIMING-17} -user "timm" -desc "Ignore the 7 segment LED clock pins driven by logic" -objects [get_pins {sevenseg/p_strobe.strobe_reg[*]/C}] -timestamp "Sat Nov  1 20:25:48 GMT 2025"
+create_waiver -type METHODOLOGY -id {TIMING-17} -user "timm" -desc "Ignore the 7 segment LED clock pins driven by logic" -objects [get_pins {sevenseg/seg_an_reg[*]/C}] -timestamp "Sat Nov  1 20:26:16 GMT 2025"
+create_waiver -type METHODOLOGY -id {TIMING-17} -user "timm" -desc "Ignore the 7 segment LED clock pins driven by logic" -objects [get_pins {sevenseg/seg_reg[*]/C}] -timestamp "Sat Nov  1 20:26:24 GMT 2025"

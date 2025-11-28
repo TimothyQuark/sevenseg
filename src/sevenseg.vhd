@@ -3,26 +3,29 @@ library ieee;
     use ieee.numeric_std.all;
 -- use work.util.all;
 
+-- TODO: Should we have a reset here too?
+
 entity sevenseg is
     port (
-        clk_logic : in    std_logic;
-        i_wr      : in    std_logic;                    --! Write new symbol to 7 segment
-        i_addr    : in    unsigned(2 downto 0);         --! Which 7 segment to update
-        i_data    : in    unsigned(3 downto 0);         --! Which symbol to update with
-        o_seg_an  : out   std_logic_vector(7 downto 0); --! Select a 7 segment to illuminate
-        o_seg     : out   std_logic_vector(6 downto 0)  --! 7 Segment encodings
+        clk      : in    std_logic;
+        i_wr     : in    std_logic;                    --! Write new symbol to 7 segment
+        i_addr   : in    unsigned(2 downto 0);         --! Which 7 segment to update
+        i_data   : in    unsigned(3 downto 0);         --! Which symbol to update with
+        o_seg_an : out   std_logic_vector(7 downto 0); --! Select a 7 segment to illuminate
+        o_seg    : out   std_logic_vector(6 downto 0)  --! 7 Segment encodings
     );
 end entity sevenseg;
 
 architecture behav of sevenseg is
 
-    -- Clock made in logic because it drives only 1 signal. A slower clock will dim
-    -- the segment displays Vivado Implementation has a HIGH warning for this logic,
-    -- but way better than fiddling with MMCM cascading or CLK EN
-    signal clk_slow : std_logic;             --! Very slow 7 segment clock (Should be 60 Hz to 1 KHz)
-    signal s_cntr   : unsigned(17 downto 0); --! Counter to derive slow clock (200 MHz / 2**18 / 8 displays = 95 Hz)
+    -- Clock made in logic because it drives only 1 signal, and MMCM cannot output such slow clock.
+    -- A slower clock will dim the segment displays. To please Vivado, clk_slow is designated as a
+    -- clock in the constraints as well.
 
-    signal s_sig : std_logic_vector(6 downto 0); --! 7 segment symbol
+    --! Counter to derive slow clock (200 MHz / 2**18 / 8 displays = 95 Hz)
+    signal s_cntr   : unsigned(17 downto 0);
+    signal clk_slow : std_logic;                    --! Very slow 7 segment clock (Datasheet: 60 Hz to 1 KHz desired)
+    signal s_sig    : std_logic_vector(6 downto 0); --! 7 segment symbol
 
     type t_seg_array is array (0 to 7) of std_logic_vector(6 downto 0);
 
@@ -40,12 +43,13 @@ architecture behav of sevenseg is
 
 begin
 
-    p_slow_clk : process (clk_logic) is
+    p_slow_clk : process (clk) is
     begin
 
-        if (rising_edge(clk_logic)) then
+        if (rising_edge(clk)) then
             s_cntr <= s_cntr + 1;
 
+            -- clk_slow is high for 50% of the cntr
             clk_slow <= '0';
             if (s_cntr(s_cntr'high) = '1') then
                 clk_slow <= '1';
@@ -58,25 +62,25 @@ begin
 
         -- Active low selects which seven segment is to be illuminated
         -- Strobe and index initialized to start writing from 7 segment AN0
-        variable strobe : std_logic_vector(7 downto 0) := "01111111";
-        variable index  : unsigned(3 downto 0)         := x"0";
+        variable v_strobe : std_logic_vector(7 downto 0) := "01111111";
+        variable v_index  : unsigned(3 downto 0)         := x"0";
 
     begin
 
         if (rising_edge(clk_slow)) then
-            strobe   := strobe(strobe'high - 1 downto 0) & strobe(strobe'high);
-            o_seg_an <= strobe;
+            v_strobe := v_strobe(v_strobe'high - 1 downto 0) & v_strobe(v_strobe'high);
+            o_seg_an <= v_strobe;
 
-            o_seg <= s_seg_list(to_integer(index));
-            index := index + 1; -- Overflow is desired
+            o_seg   <= s_seg_list(to_integer(v_index));
+            v_index := v_index + 1; -- Overflow is desired
         end if;
 
     end process p_strobe;
 
-    p_wr : process (clk_logic) is
+    p_wr : process (clk) is
     begin
 
-        if (rising_edge(clk_logic)) then
+        if (rising_edge(clk)) then
             if (i_wr = '1') then
                 s_seg_list(to_integer(i_addr)) <= s_sig;
             end if;

@@ -26,8 +26,8 @@ begin
     -- Instantiate the MMCM
     mmcm : entity work.mmcm
         port map (
-            clk_logic       => clk_logic,
-            i_clk_ref100mhz => clk_ref100mhz
+            clk_logic     => clk_logic,
+            clk_ref100mhz => clk_ref100mhz
         );
 
     o_led <= s_led;

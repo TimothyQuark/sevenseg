@@ -35,7 +35,9 @@
 #
 #    <none>
 #
+# 4. To use this script, change TCL directory to $origin_dir and then run this TCL script
 #*****************************************************************************************
+
 
 # Check file required for this script exists
 proc checkRequiredFiles { origin_dir} {

@@ -48,6 +48,7 @@ unisims
 *.lib
 
 ## dirs
+sevenseg
 sevenseg.cache/
 sevenseg.hw/
 sevenseg.ip_user_files/
